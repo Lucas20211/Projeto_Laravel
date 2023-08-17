@@ -20,32 +20,58 @@ class ProdutosController extends Controller
      */
     public function store(Request $request)
     {
-        return Produto::create($request->all());
+        if(Produto::create($request->all())){
+            return response()->json([
+                'message' => 'Produto cadastrado com successo!'
+            ],201);
+        }
+        return response()->json([
+            'message' => 'Produto não cadastrado'
+        ],404);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $produto)
     {
-        return Produto::findOrFail($id);
+        $produtoShow = Produto::find($produto);
+        if($produtoShow){
+            return $produtoShow;
+        }
+        return response()->json([
+            'message' => 'Erro ao pesquisar o produto.'
+        ],404);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $produto)
     {
-        $produto = Produto::findOrFail($id);
-        $produto->update($request->all());
-        return $produto;
+        $produto = Produto::find($produto);
+        if($produto){
+            $produto->update($request->all());
+
+            return $produto;
+        }
+        return response()->json([
+            'message' => 'Erro ao atualizar o produto.'
+        ],404);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $produto)
     {
-        return Produto::destroy($id);
+        if(Produto::destroy($produto)){
+            return response()->json([
+                'message' => 'Produto excluido com successo!'
+            ],201);
+        }
+        return response()->json([
+            'message' => 'Erro ao excluir o produto.'
+        ],404);
     }
 }

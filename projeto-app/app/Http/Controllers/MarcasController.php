@@ -20,7 +20,14 @@ class MarcasController extends Controller
      */
     public function store(Request $request)
     {
-        return Marca::create($request->all());
+        if(Marca::create($request->all())){
+            return response()->json([
+                'message' => 'Marca cadastrado com successo!'
+            ],201);
+        }
+        return response()->json([
+            'message' => 'Marca não cadastrado'
+        ],404);
     }
 
     /**
@@ -28,7 +35,13 @@ class MarcasController extends Controller
      */
     public function show(string $marca) // Alterado de %id para marca, por usar apiResource
     {
-        return Marca::findOrFail($marca);
+        $marcaShow = Marca::find($marca);
+        if($marcaShow){
+            return $marcaShow;
+        }
+        return response()->json([
+            'message' => 'Erro ao pesquisar o marca.'
+        ],404);
     }
 
     /**
@@ -36,9 +49,15 @@ class MarcasController extends Controller
      */
     public function update(Request $request, string $marca)
     {
-        $marca = Marca::findOrFail($marca);
-        $marca->update($request->all());
-        return $marca;
+        $marca = marca::find($marca);
+        if($marca){
+            $marca->update($request->all());
+
+            return $marca;
+        }
+        return response()->json([
+            'message' => 'Erro ao atualizar o marca.'
+        ],404);
     }
 
     /**
@@ -46,6 +65,13 @@ class MarcasController extends Controller
      */
     public function destroy(string $marca)
     {
-        return Marca::destroy($marca);
+        if(Marca::destroy($marca)){
+            return response()->json([
+                'message' => 'Marca excluido com successo!'
+            ],201);
+        }
+        return response()->json([
+            'message' => 'Erro ao excluir o marca.'
+        ],404);
     }
 }
