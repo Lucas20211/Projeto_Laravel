@@ -31,15 +31,13 @@ use Illuminate\Support\Facades\Route;
 
 // Route::apiResource('marca', MarcasController::class); // para simplificar o codigo - precisa alterar no controller o $id
 
-Route::apiResources([
-    'marca'=> MarcasController::class,
-    'produto'=> ProdutosController::class
-]);
+Route::group(['middlerware' => ['auth:sanctum']], function(){
+    Route::apiResources([
+        'marca'=> MarcasController::class,
+        'produto'=> ProdutosController::class
+    ]);
+    Route::post('/logout', [AuthController::class, 'logout']);
+});
 
 Route::post('/register', [AuthController::class, 'register']); // cria o usuário
 Route::post('/login', [AuthController::class, 'login']); // cria o login
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-

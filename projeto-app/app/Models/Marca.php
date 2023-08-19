@@ -10,4 +10,10 @@ class Marca extends Model
     use HasFactory;
 
     protected $fillable = ['nome', 'pais'];
+        /**
+         * Pegar todos os produtos vinculados
+         */
+    public function produto(){
+        return $this->hasMany(Produto::class);
+    }
 }
