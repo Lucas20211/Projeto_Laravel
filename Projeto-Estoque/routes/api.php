@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\MarcaController;
+use App\Http\Controllers\ProdutoController;
+use App\Http\Controllers\FornecedorController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,10 +17,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::post('/marca', [MarcaController::class, 'store']);
+Route::get('/marca', [MarcaController::class, 'index']);
+
 
 Route::post('/produto', [ProdutoController::class, 'store']);
+Route::get('/produto', [ProdutoController::class, 'index']);
 
-// Route::post('/fornecedor', [FornecedorController::class, 'store']);
+Route::post('/fornecedores', [FornecedorController::class, 'store']);
+Route::get('/fornecedores', [FornecedorController::class, 'index']);
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

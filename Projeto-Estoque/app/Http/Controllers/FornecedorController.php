@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Marca;
+use App\Models\Fornecedor;
 use Illuminate\Http\Request;
 
-class MarcaController extends Controller
+class FornecedorController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return Marca::all();
+        return Fornecedor::all();
     }
 
     /**
@@ -20,7 +20,8 @@ class MarcaController extends Controller
      */
     public function store(Request $request)
     {
-        return Marca::create($request->all());
+        return Fornecedor::create($request->all()); 
+        
     }
 
     /**
