@@ -17,5 +17,15 @@ class Marca extends Model
     public function produtos(){
         return $this->hasMany(Produto::class);
     }
+    public function scopeFilters($query, array $filters){
+        if($filters['produto']){
+            $query->where('produto', $filters['produto']);
+        }
+        return $query;
+    }
+
+    public function produto(){
+        return $this->belongsTo(Produto::class);
+    }
     
 }
