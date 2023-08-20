@@ -35,6 +35,7 @@ class ProdutoController extends Controller
      */
     public function show(string $id)
     {
+        
         $produto = Produto::find($id);
         if($produto){
             return $produto;
@@ -50,10 +51,17 @@ class ProdutoController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $path = $request->imagem->store('imagem_produto', 'public');
+       
         $produto = Produto::find($id);
         if($produto){
-            $produto->update($request->all());
-            return $produto;
+            $produto->imagem = $path;
+            if($produto->save()){
+                return $produto;
+            }
+            return response()->json([
+                'message' => 'Erro ao atualizar produto.'
+            ], 404);
         }
         return response()->json([
             'message' => 'Erro ao atualizar produto.'
