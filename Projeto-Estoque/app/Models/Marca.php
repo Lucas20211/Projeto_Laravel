@@ -11,6 +11,11 @@ class Marca extends Model
  
     protected $fillable = ['nome'];
     public $timeStamps = false;
-
+    /**
+     * Pegar todos os produtos vinculados
+     */
+    public function produtos(){
+        return $this->hasMany(Produto::class);
+    }
     
 }

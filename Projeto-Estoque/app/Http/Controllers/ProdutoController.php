@@ -20,7 +20,14 @@ class ProdutoController extends Controller
      */
     public function store(Request $request)
     {
-        return Produto::create($request->all()); 
+        if(Produto::create($request->all())){
+            return response()->json([
+                'message' => 'Cadastro do produto efetuado com sucesso.'
+            ]);
+            return response()->json([
+                'message' => 'Erro ao cadastrar produto.'
+            ]);
+        }
     }
 
     /**
@@ -28,7 +35,14 @@ class ProdutoController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $produto = Produto::find($id);
+        if($produto){
+            return $produto;
+        }
+        return response()->json([
+            'message' => 'Erro ao pesquisar produto.'
+        ], 404);
+        
     }
 
     /**
@@ -36,7 +50,16 @@ class ProdutoController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $produto = Produto::find($id);
+        if($produto){
+            $produto->update($request->all());
+            return $produto;
+        }
+        return response()->json([
+            'message' => 'Erro ao atualizar produto.'
+        ], 404);
+            
+
     }
 
     /**
@@ -44,6 +67,13 @@ class ProdutoController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        if(Produto::destroy($id)){
+            return response()->json([
+                'message' => 'Marca excluida com sucesso.'
+            ], 201);
+        }
+        return response()->json([
+            'message' => 'Erro ao excluir marca.'
+        ], 404);
     }
 }

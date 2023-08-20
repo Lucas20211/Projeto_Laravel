@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MarcaController;
 use App\Http\Controllers\ProdutoController;
 use App\Http\Controllers\FornecedorController;
@@ -16,17 +17,26 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-Route::post('/marca', [MarcaController::class, 'store']);
-Route::get('/marca', [MarcaController::class, 'index']);
 
+Route::group(['middleware'=> ['auth:sanctum']], function () {
+    
+    Route::post('/marca', [MarcaController::class, 'store']);
+    Route::get('/marca', [MarcaController::class, 'index']);
+    Route::put('/marca/{id}', [MarcaController::class, 'update']);
+    Route::get('/marca/{id}', [MarcaController::class, 'show']);
+    Route::delete('/marca/{id}', [MarcaController::class, 'destroy']);
+    
+    Route::post('/produto', [ProdutoController::class, 'store']);
+    Route::get('/produto', [ProdutoController::class, 'index']);
+    Route::put('/produto/{id}', [ProdutoController::class, 'update']);
+    Route::get('/produto/{id}', [ProdutoController::class, 'show']);
+    Route::delete('/produto/{id}', [ProdutoController::class, 'destroy']);
+    
+    Route::apiResource('fornecedores', FornecedorController::class);
 
-Route::post('/produto', [ProdutoController::class, 'store']);
-Route::get('/produto', [ProdutoController::class, 'index']);
-
-Route::post('/fornecedores', [FornecedorController::class, 'store']);
-Route::get('/fornecedores', [FornecedorController::class, 'index']);
-
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    Route::post('/logout', [AuthController::class, 'logout']);
 });
+    
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/login', [AuthController::class, 'login']);
+
